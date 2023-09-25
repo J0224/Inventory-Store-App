@@ -5,27 +5,34 @@ if (dotenv.error) {
 }
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser  = require("body-parser");
+const bodyParser = require("body-parser");
 const cors = require("cors");
-
 const app = express();
-
 const PORT = process.env.PORT || 3500;
 
-const uri = "mongodb+srv://josemiguelmateo2:<Eusebiomateo241992>@cluster0.bbz1mpn.mongodb.net/?retryWrites=true&w=majority";
+// Use process.env.MONGO_URI to get the MongoDB Atlas URI from the .env file
+const uri = process.env.MONGO_URI;
 
-//Connect to Mongodb start server
+// Connect to MongoDB and start the server
 mongoose
-.connect(process.env.MONGO_URI)
-.then(()=>{
-  app.listen(PORT, ()=>{
-    console.log(`Server is running on ${PORT}`)
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running on ${PORT}`);
+    });
   })
-})
-.catch((err)=>{
-  console.log(err)
-});
+  .catch((err) => {
+    console.log(err);
+  });
 
+
+  const mongoUri = "mongodb+srv://admin:8uKZ3SA88TxUlGm3@cluster0.bbz1mpn.mongodb.net/?retryWrites=true&w=majority"
+
+  MongoClient.connect(mongoUri, (err, client)=>{
+  if (err){
+    throw err;
+  }
+console.log("Connected to db")
+  } )
