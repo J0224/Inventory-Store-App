@@ -27,12 +27,4 @@ mongoose
     console.log(err);
   });
 
-
-  const mongoUri = "mongodb+srv://admin:8uKZ3SA88TxUlGm3@cluster0.bbz1mpn.mongodb.net/?retryWrites=true&w=majority"
-
-  MongoClient.connect(mongoUri, (err, client)=>{
-  if (err){
-    throw err;
-  }
-console.log("Connected to db")
-  } )
+  
