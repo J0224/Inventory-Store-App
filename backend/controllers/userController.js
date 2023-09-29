@@ -3,7 +3,7 @@ const User = require("../models/usermodels");
 const jwt = require ("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-//Thid is to generate json web token
+//This is to generate json web token
 const generateToken = (id) =>{
   return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: "1d"})
 };
@@ -125,7 +125,46 @@ res.cookie("token", token, {
 
 });
 
+
+//This is an async function call logout to log user out
+
+const logout = asyncHandler (async (req, res) =>{
+  
+  res.cookie("token", "", {
+    path:"/",
+    httpOnly: true,
+    expires: new Date(0), // expire the cookie
+    sameSite: "none",
+    secure: true
+  });
+  return res.status(200).json({message: "Terminaste la seccion existosamente"})
+});
+
+//This is a function called getUser to get users data
+
+const getUser = asyncHandler (async (req, res) =>{ 
+  const user = await User.findById(req.user._id)
+
+ 
+if (user){
+  const {_id, name, email, photo, phone, bio } = user;
+  res.status(200).json({
+    _id, 
+    name, 
+    email, 
+    photo, 
+    phone, 
+    bio,
+  });
+} else {
+  res.status(400)
+  throw new Error("Usuario no fue encontrado")
+}
+});
+
 module.exports = {
   registerUser, 
   loginUser,
+  logout,
+  getUser
 };
